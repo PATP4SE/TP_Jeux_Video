@@ -7,13 +7,13 @@ public class PlayerMove : MonoBehaviour {
     [SerializeField] private float decreasePercentage = 0;
 
     private SpriteRenderer sprite;
-    private Rigidbody2D rb;
+    private Rigidbody2D rbody;
 
 
     // Use this for initialization
     void Start () {
         sprite = GetComponent<SpriteRenderer>();
-        rb = GetComponent<Rigidbody2D>();
+        rbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -21,11 +21,9 @@ public class PlayerMove : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            //rb.velocity = new Vector2(0, 0);
-
             Vector3 vect = new Vector3(transform.position.x, transform.position.y + speed, transform.position.z);
             transform.LookAt(vect);
-            rb.AddForce(transform.forward * speed, ForceMode2D.Impulse);
+            rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
             transform.rotation = new Quaternion(0, 0, 0, 0);
         }
@@ -33,7 +31,7 @@ public class PlayerMove : MonoBehaviour {
         {
             Vector3 vect = new Vector3(transform.position.x - speed, transform.position.y, transform.position.z);
             transform.LookAt(vect);
-            rb.AddForce(transform.forward * speed, ForceMode2D.Impulse);
+            rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
             rotate(0, 0, 90);
         }
@@ -41,7 +39,7 @@ public class PlayerMove : MonoBehaviour {
         {
             Vector3 vect = new Vector3(transform.position.x, transform.position.y - speed, transform.position.z);
             transform.LookAt(vect);
-            rb.AddForce(transform.forward * speed, ForceMode2D.Impulse);
+            rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
             rotate(0, 0, 180);
         }
@@ -49,12 +47,12 @@ public class PlayerMove : MonoBehaviour {
         {
             Vector3 vect = new Vector3(transform.position.x + speed, transform.position.y, transform.position.z);
             transform.LookAt(vect);
-            rb.AddForce(transform.forward * speed, ForceMode2D.Impulse);
+            rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
             rotate(0, 0, -90);
         }
 
-        if (!((rb.velocity.x <= 0.0001 && rb.velocity.x >= -0.0001) && (rb.velocity.y <= 0.0001 && rb.velocity.y >= -0.0001)))
+        if (!((rbody.velocity.x <= 0.0001 && rbody.velocity.x >= -0.0001) && (rbody.velocity.y <= 0.0001 && rbody.velocity.y >= -0.0001)))
         {
             DecreaseSpeed();
         }
@@ -70,7 +68,7 @@ public class PlayerMove : MonoBehaviour {
 
     private void DecreaseSpeed()
     {
-        rb.velocity = new Vector2(rb.velocity.x * (decreasePercentage / 100), rb.velocity.y * (decreasePercentage / 100));
+        rbody.velocity = new Vector2(rbody.velocity.x * (decreasePercentage / 100), rbody.velocity.y * (decreasePercentage / 100));
     }
 
 
