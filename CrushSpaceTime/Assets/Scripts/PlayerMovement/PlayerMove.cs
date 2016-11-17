@@ -51,11 +51,6 @@ public class PlayerMove : MonoBehaviour {
 
             rotate(0, 0, -90);
         }
-
-        //if (!((rbody.velocity.x <= 0.0001 && rbody.velocity.x >= -0.0001) && (rbody.velocity.y <= 0.0001 && rbody.velocity.y >= -0.0001)))
-        //{
-        //    //DecreaseSpeed();
-        //}
     }
 
     /************************************ PRIVATE METHODS ************************************/
@@ -65,11 +60,6 @@ public class PlayerMove : MonoBehaviour {
         quat.eulerAngles = new Vector3(x, y, z);
         transform.rotation = quat;
     }
-
-    //private void DecreaseSpeed()
-    //{
-    //    rbody.velocity = new Vector2(rbody.velocity.x * (decreasePercentage / 100), rbody.velocity.y * (decreasePercentage / 100));
-    //}
 
 
 }
