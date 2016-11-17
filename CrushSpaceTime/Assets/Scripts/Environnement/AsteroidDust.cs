@@ -4,42 +4,40 @@ using System.Collections;
 public class AsteroidDust : MonoBehaviour {
 
 
-    [SerializeField] private Transform parent;
-    [SerializeField] private float pushStrenght;
-
-    private Rigidbody2D rbody;
+    [SerializeField] private Transform parent = null;
+    [SerializeField] private float pushStrenght = 0;
+    [SerializeField] private float attractionRadius = 0;
 
     // Use this for initialization
     void Start ()
     {
-        rbody = GetComponent<Rigidbody2D>();
-        Push();
+        push();
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        if (!((rbody.velocity.x <= 0.0001 && rbody.velocity.x >= -0.0001) && (rbody.velocity.y <= 0.0001 && rbody.velocity.y >= -0.0001)))
-        {
-            DecreaseSpeed();
-        }
-    }
-    
-    private void Push()
-    {
-        Vector2 vect = parent.position;
 
+    // Update is called once per frame
+    void Update()
+    {
+        //if (Vector2.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position) <= attractionRadius)
+        //{
+        //    Quaternion temp = transform.rotation;
+
+        //    transform.LookAt(GameObject.FindGameObjectWithTag("Player").transform.position);
+        //    //transform.rotation = new Quaternion(-transform.rotation.x, -transform.rotation.y, transform.rotation.z, transform.rotation.w);
+        //    GetComponent<Rigidbody2D>().AddForce(transform.forward * pushStrenght, ForceMode2D.Impulse);
+
+        //    transform.rotation = temp;
+        //}
+    }
+
+    private void push()
+    {
         Quaternion temp = transform.rotation;
 
-        transform.LookAt(vect);
+        transform.LookAt(parent.position);
         transform.rotation = new Quaternion(-transform.rotation.x, -transform.rotation.y, transform.rotation.z, transform.rotation.w);
         GetComponent<Rigidbody2D>().AddForce(transform.forward * pushStrenght, ForceMode2D.Impulse);
 
         transform.rotation = temp;
     }
-
-    private void DecreaseSpeed()
-    {
-        rbody.velocity = new Vector2(rbody.velocity.x * (99 / 100), rbody.velocity.y * (99 / 100));
-    }
+   
 }

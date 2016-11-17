@@ -22,7 +22,8 @@ public class Asteroid : MonoBehaviour {
 
             if (coll.bounds.Contains(mousePosition))
             {
-                this.gameObject.SetActive(false);
+                //this.gameObject.SetActive(false);
+                Destroy(this.gameObject);
                 Instantiate(asteroidDust, transform.position, new Quaternion());
             }
         }
