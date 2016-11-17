@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Repulse : MonoBehaviour {
 
-    [SerializeField] private float radius;
-    [SerializeField] private float repulseStrenght;
+    [SerializeField] private float radius = 0f;
+    [SerializeField] private float repulseStrenght = 0f;
 
     // Use this for initialization
     void Start ()
@@ -16,36 +16,33 @@ public class Repulse : MonoBehaviour {
 	void Update ()
     {
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Object[] objects = GameObject.FindObjectsOfType(typeof(GameObject));
 
             foreach (GameObject obj in objects)
             {
-                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-                if ((Vector2.Distance(mousePosition, obj.transform.position) <= radius) && obj.tag != "Player" && obj.tag != "MainCamera")
+                if ((Vector2.Distance(transform.position, obj.transform.position) <= radius) && obj.tag == "Asteroid")
                 {
-                    obj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-                    
-                    Vector2 vect = new Vector2(mousePosition.x, mousePosition.y);
-
-                    Quaternion temp = obj.transform.rotation;
-
-                    obj.transform.LookAt(vect);
-                    obj.transform.rotation = new Quaternion(-obj.transform.rotation.x, -obj.transform.rotation.y, obj.transform.rotation.z, obj.transform.rotation.w);
-                    obj.GetComponent<Rigidbody2D>().AddForce(obj.transform.forward * repulseStrenght, ForceMode2D.Impulse);
-                    
-                    obj.transform.rotation = temp;
+                    pushObject(obj);
+                    obj.GetComponent<Mover>().repusled = true;
                 }
             }
         }
     }
 
 
-    private void PushObject(GameObject obj)
+    private void pushObject(GameObject obj)
     {
-        
+        obj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+
+        Quaternion temp = obj.transform.rotation;
+
+        obj.transform.LookAt(transform.position);
+        obj.transform.rotation = new Quaternion(-obj.transform.rotation.x, -obj.transform.rotation.y, obj.transform.rotation.z, obj.transform.rotation.w);
+        obj.GetComponent<Rigidbody2D>().AddForce(obj.transform.forward * repulseStrenght, ForceMode2D.Impulse);
+
+        obj.transform.rotation = temp;
     }
 
 }

@@ -12,14 +12,12 @@ public class PlayerMove : MonoBehaviour {
     [SerializeField] private Boundary boundary;
     [SerializeField] private float speed = 0;
 
-    private SpriteRenderer sprite;
     private Rigidbody2D rbody;
     private AudioSource launchAudio;
 
 
     // Use this for initialization
     void Start () {
-        sprite = GetComponent<SpriteRenderer>();
         rbody = GetComponent<Rigidbody2D>();
         launchAudio = GetComponent<AudioSource>();
     }
@@ -27,17 +25,17 @@ public class PlayerMove : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
             Vector3 vect = new Vector3(transform.position.x, transform.position.y + speed, transform.position.z);
             transform.LookAt(vect);
             rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
             transform.rotation = new Quaternion(0, 0, 0, 0);
-
-            if (areAllMovementKeysReleasedExceptKey(KeyCode.W)) launchAudio.Play();
+            
+            if (areAllMovementKeysReleasedExceptKey(KeyCode.W) && !launchAudio.isPlaying) launchAudio.Play();
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A))
         {
             Vector3 vect = new Vector3(transform.position.x - speed, transform.position.y, transform.position.z);
             transform.LookAt(vect);
@@ -45,9 +43,9 @@ public class PlayerMove : MonoBehaviour {
 
             rotate(0, 0, 90);
 
-            if (areAllMovementKeysReleasedExceptKey(KeyCode.A)) launchAudio.Play();
+            if (areAllMovementKeysReleasedExceptKey(KeyCode.A) && !launchAudio.isPlaying) launchAudio.Play();
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S))
         {
             Vector3 vect = new Vector3(transform.position.x, transform.position.y - speed, transform.position.z);
             transform.LookAt(vect);
@@ -55,9 +53,9 @@ public class PlayerMove : MonoBehaviour {
 
             rotate(0, 0, 180);
 
-            if (areAllMovementKeysReleasedExceptKey(KeyCode.S)) launchAudio.Play();
+            if (areAllMovementKeysReleasedExceptKey(KeyCode.S) && !launchAudio.isPlaying) launchAudio.Play();
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             Vector3 vect = new Vector3(transform.position.x + speed, transform.position.y, transform.position.z);
             transform.LookAt(vect);
@@ -65,7 +63,7 @@ public class PlayerMove : MonoBehaviour {
 
             rotate(0, 0, -90);
 
-            if (areAllMovementKeysReleasedExceptKey(KeyCode.D)) launchAudio.Play();
+            if (areAllMovementKeysReleasedExceptKey(KeyCode.D) && !launchAudio.isPlaying) launchAudio.Play();
         }
 
         rbody.position = new Vector3
