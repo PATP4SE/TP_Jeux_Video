@@ -69,6 +69,7 @@ public class PlayerMove : MonoBehaviour {
             if (areAllMovementKeysReleasedExceptKey(KeyCode.D)) launchAudio.Play();
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
         if (!((rbody.velocity.x <= 0.0001 && rbody.velocity.x >= -0.0001) && (rbody.velocity.y <= 0.0001 && rbody.velocity.y >= -0.0001)))
@@ -86,6 +87,13 @@ public class PlayerMove : MonoBehaviour {
 
         if (areAllMovementKeyReleased()) launchAudio.Stop();
 >>>>>>> origin/master
+=======
+
+        //if (!((rbody.velocity.x <= 0.0001 && rbody.velocity.x >= -0.0001) && (rbody.velocity.y <= 0.0001 && rbody.velocity.y >= -0.0001)))
+        //{
+        //    //DecreaseSpeed();
+        //}
+>>>>>>> parent of a2f00f2... Player absorbe la poussiere d'asteroide
     }
 
     /************************************ PRIVATE METHODS ************************************/
@@ -96,6 +104,7 @@ public class PlayerMove : MonoBehaviour {
         transform.rotation = quat;
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
     private void DecreaseSpeed()
@@ -109,6 +118,13 @@ public class PlayerMove : MonoBehaviour {
 
         if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D))
             areAllMovementKeyReleased = true;
+=======
+    //private void DecreaseSpeed()
+    //{
+    //    rbody.velocity = new Vector2(rbody.velocity.x * (decreasePercentage / 100), rbody.velocity.y * (decreasePercentage / 100));
+    //}
+
+>>>>>>> parent of a2f00f2... Player absorbe la poussiere d'asteroide
 
         return areAllMovementKeyReleased;
     }
