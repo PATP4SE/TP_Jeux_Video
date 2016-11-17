@@ -19,17 +19,24 @@ public class GameController : MonoBehaviour {
 
     void Update()
     {
+        
         if (timeSpeed != 1f)
         {
             musicBackground.pitch = Time.timeScale * timeSpeed;
             GameObject[] asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
             foreach(GameObject asteroid in asteroids)
             {
-                Rigidbody2D rbody = asteroid.GetComponent<Rigidbody2D>();
-                Vector2 oldVelocity = rbody.velocity;
-                Debug.Log("oldVelocity" + oldVelocity.y);
-                rbody.velocity = new Vector2(0, oldVelocity.y*timeSpeed);
-                Debug.Log("newVelocity" + rbody.velocity.y);
+                //if (asteroid.GetComponent<Mover>().getSpeedAlteration() != timeSpeed)
+                //{
+                //    asteroid.GetComponent<Mover>().setSpeedAlteration(timeSpeed);
+
+                //}
+
+                //Rigidbody2D rbody = asteroid.GetComponent<Rigidbody2D>();
+                //Vector2 oldVelocity = rbody.velocity;
+                //Debug.Log("oldVelocity" + oldVelocity.y);
+                //rbody.velocity = new Vector2(0, oldVelocity.y*timeSpeed);
+                //Debug.Log("newVelocity" + rbody.velocity.y);
             }
         }
     }
