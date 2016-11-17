@@ -2,6 +2,10 @@
 using System.Collections;
 
 public class GameController : MonoBehaviour {
+    //Constants
+    private const float MIN_SPAWN_CREATION_WAIT = 0.05f;
+    private const float MAX_SPAWN_WAIT = 3f;
+    private const float MIN_SPAWN_WAIT = 0f;
 
     [SerializeField] private GameObject hazard;
     [SerializeField] private Vector3 spawnValues;
@@ -9,36 +13,38 @@ public class GameController : MonoBehaviour {
     [SerializeField] private float spawnWait;
     [SerializeField] private float startWait;
     [SerializeField] private float waveWait;
-    [SerializeField] private float timeSpeed;
+    [SerializeField] private float timeAlteration;
+    private float oldTimeAlteration;
     private AudioSource musicBackground;
 
     void Start () {
+        spawnWait = MIN_SPAWN_WAIT;
+        timeAlteration = 1f;
+        waveWait = 0;
+        //GetComponent<Mover>().setTimeAlteration(timeAlteration);
         musicBackground = GetComponent<AudioSource>();
         StartCoroutine(spawnWaves());
     }
 
     void Update()
     {
-        
-        if (timeSpeed != 1f)
+        GameObject[] asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
+        foreach (GameObject asteroid in asteroids)
         {
-            musicBackground.pitch = Time.timeScale * timeSpeed;
-            GameObject[] asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
-            foreach(GameObject asteroid in asteroids)
+            if (asteroid.GetComponent<Mover>().getTimeAlteration() != timeAlteration)
             {
-                //if (asteroid.GetComponent<Mover>().getSpeedAlteration() != timeSpeed)
-                //{
-                //    asteroid.GetComponent<Mover>().setSpeedAlteration(timeSpeed);
-
-                //}
-
-                //Rigidbody2D rbody = asteroid.GetComponent<Rigidbody2D>();
-                //Vector2 oldVelocity = rbody.velocity;
-                //Debug.Log("oldVelocity" + oldVelocity.y);
-                //rbody.velocity = new Vector2(0, oldVelocity.y*timeSpeed);
-                //Debug.Log("newVelocity" + rbody.velocity.y);
+                asteroid.GetComponent<Mover>().setTimeAlteration(timeAlteration);
             }
         }
+
+        if(oldTimeAlteration != timeAlteration && timeAlteration < 1)
+            spawnWait = Mathf.Clamp(MAX_SPAWN_WAIT - timeAlteration*2, MIN_SPAWN_WAIT, MAX_SPAWN_WAIT);
+        else if (oldTimeAlteration != timeAlteration && timeAlteration >= 1)
+            spawnWait = 0;
+
+        musicBackground.pitch = Time.timeScale * timeAlteration;
+        oldTimeAlteration = timeAlteration;
+
     }
 
     IEnumerator spawnWaves()
@@ -50,10 +56,16 @@ public class GameController : MonoBehaviour {
                 yield return new WaitForSeconds(startWait);
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
                 Quaternion spawnRotation = Quaternion.identity;
-                Instantiate(hazard, spawnPosition, spawnRotation);
+                if (timeAlteration > MIN_SPAWN_CREATION_WAIT)
+                    Instantiate(hazard, spawnPosition, spawnRotation);
                 yield return new WaitForSeconds(spawnWait);
             }
             yield return new WaitForSeconds(waveWait);
         }
+    }
+
+    public float getTimeAlteration()
+    {
+        return timeAlteration;
     }
 }
