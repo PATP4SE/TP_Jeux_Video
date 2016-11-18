@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
     private const float MIN_SPAWN_CREATION_WAIT = 0.05f;
     private const float MAX_SPAWN_WAIT = 3f;
     private const float MIN_SPAWN_WAIT = 0f;
+    private const float LEVEL_TEXT_TIME = 2.5f;
 
     [SerializeField] private GameObject hazard;
     [SerializeField] private Vector3 spawnValues;
@@ -19,10 +20,11 @@ public class GameController : MonoBehaviour {
     private AudioSource musicBackground;
 
     void Start () {
+        StartCoroutine(makeLevelTextAppearDisappear());
+
         spawnWait = MIN_SPAWN_WAIT;
         timeAlteration = GameObject.Find("TimeManipulationSlider").GetComponent<Slider>().value;
         waveWait = 0;
-        //GetComponent<Mover>().setTimeAlteration(timeAlteration);
         musicBackground = GetComponent<AudioSource>();
         StartCoroutine(spawnWaves());
     }
@@ -65,6 +67,14 @@ public class GameController : MonoBehaviour {
             }
             yield return new WaitForSeconds(waveWait);
         }
+    }
+
+    IEnumerator makeLevelTextAppearDisappear()
+    {
+        yield return new WaitForSeconds(LEVEL_TEXT_TIME);
+        GameObject levelText = GameObject.Find("LevelText");
+        levelText.GetComponent<Text>().text = ("Niveau 1 - Premier jouable");
+        Destroy(levelText, LEVEL_TEXT_TIME);
     }
 
     public float getTimeAlteration()
