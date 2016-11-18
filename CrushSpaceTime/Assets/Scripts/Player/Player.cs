@@ -48,6 +48,11 @@ public class Player : MonoBehaviour {
         if (col.gameObject.tag == "Asteroid") respawn();
     }
 
+    public void QuitLevel()
+    {
+        print("work");
+    }
+
     /****************** PRIVATE METHODS **********************/
     private void respawn()
     {
