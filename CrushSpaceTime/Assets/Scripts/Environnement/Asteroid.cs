@@ -4,13 +4,13 @@ using System.Collections;
 public class Asteroid : MonoBehaviour {
 
 
-    private CircleCollider2D coll;
+    private PolygonCollider2D coll;
     [SerializeField] private Transform asteroidDust;
 
 	// Use this for initialization
 	void Start ()
     {
-        coll = GetComponent<CircleCollider2D>();
+        coll = GetComponent<PolygonCollider2D>();
     }
 	
 	// Update is called once per frame
