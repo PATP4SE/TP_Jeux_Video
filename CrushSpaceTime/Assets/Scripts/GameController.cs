@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
     //Constants
@@ -19,7 +20,7 @@ public class GameController : MonoBehaviour {
 
     void Start () {
         spawnWait = MIN_SPAWN_WAIT;
-        timeAlteration = 1f;
+        timeAlteration = GameObject.Find("TimeManipulationSlider").GetComponent<Slider>().value;
         waveWait = 0;
         //GetComponent<Mover>().setTimeAlteration(timeAlteration);
         musicBackground = GetComponent<AudioSource>();
@@ -28,6 +29,8 @@ public class GameController : MonoBehaviour {
 
     void Update()
     {
+        timeAlteration = GameObject.Find("TimeManipulationSlider").GetComponent<Slider>().value;
+        GameObject.Find("TimeAlterationText").GetComponent<Text>().text = timeAlteration.ToString("F2");
         GameObject[] asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
         foreach (GameObject asteroid in asteroids)
         {
