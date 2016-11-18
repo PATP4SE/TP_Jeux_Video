@@ -23,6 +23,12 @@ public class Mover : MonoBehaviour {
         if (!repusled) rbody.velocity = new Vector2(0, speed * timeAlteration);
     }
 
+    public void setRepulsed(bool _repulsed)
+    {
+        this.repusled = _repulsed;
+    }
+
+
     public float getTimeAlteration()
     {
         return timeAlteration;

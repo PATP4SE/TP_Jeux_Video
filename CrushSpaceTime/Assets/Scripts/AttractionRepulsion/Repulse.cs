@@ -25,7 +25,7 @@ public class Repulse : MonoBehaviour {
                 if ((Vector2.Distance(transform.position, obj.transform.position) <= radius) && obj.tag == "Asteroid")
                 {
                     pushObject(obj);
-                    obj.GetComponent<Mover>().repusled = true;
+                    obj.GetComponent<Mover>().setRepulsed(true);
                 }
             }
         }
