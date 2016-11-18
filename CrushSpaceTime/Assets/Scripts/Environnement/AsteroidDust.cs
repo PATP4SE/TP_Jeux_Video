@@ -42,7 +42,7 @@ public class AsteroidDust : MonoBehaviour
         if (col.gameObject.tag == "Player")
         {
             Destroy(this.gameObject);
-            //Ajout à l'inventaire
+            col.gameObject.GetComponent<Player>().AddDust();
         }
     }
 
