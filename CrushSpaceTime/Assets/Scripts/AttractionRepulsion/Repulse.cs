@@ -23,7 +23,7 @@ public class Repulse : MonoBehaviour {
             foreach (GameObject obj in objects)
             {
                 if ((Vector2.Distance(transform.position, obj.transform.position) <= radius) && obj.tag == "Asteroid")
-                {
+                {                    
                     pushObject(obj);
                     obj.GetComponent<Mover>().setRepulsed(true);
                 }
