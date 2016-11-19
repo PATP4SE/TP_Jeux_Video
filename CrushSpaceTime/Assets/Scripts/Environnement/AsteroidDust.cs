@@ -25,15 +25,18 @@ public class AsteroidDust : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position) <= attractionRadius)
+        if (GameObject.FindGameObjectWithTag("Player") != null)
         {
-            rbody.velocity = new Vector2(0, 0);
-            Quaternion temp = transform.rotation;
+            if (Vector2.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position) <= attractionRadius)
+            {
+                rbody.velocity = new Vector2(0, 0);
+                Quaternion temp = transform.rotation;
 
-            transform.LookAt(GameObject.FindGameObjectWithTag("Player").transform.position);
-            rbody.AddForce(transform.forward * pushStrenght, ForceMode2D.Impulse);
+                transform.LookAt(GameObject.FindGameObjectWithTag("Player").transform.position);
+                rbody.AddForce(transform.forward * pushStrenght, ForceMode2D.Impulse);
 
-            transform.rotation = temp;
+                transform.rotation = temp;
+            }
         }
     }
 

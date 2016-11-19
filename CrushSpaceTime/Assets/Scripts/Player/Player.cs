@@ -5,15 +5,19 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
     private int dustCount;
+    private bool isInSpaceShip;
 
+    [SerializeField] private int maxDustCount;
     [SerializeField] private Vector2 spawnCoordinates;
-    private PolygonCollider2D coll;
+
+    private Collider2D coll;
 
     // Use this for initialization
     void Start ()
     {
+        this.isInSpaceShip = false;
         dustCount = 0;
-        coll = GetComponent<PolygonCollider2D>();
+        coll = GetComponent<Collider2D>();
         respawn();
     }
 	
@@ -25,7 +29,7 @@ public class Player : MonoBehaviour {
 
     public void AddDust()
     {
-        if (this.dustCount < 10)
+        if (this.dustCount < maxDustCount)
         {
             this.dustCount++;
             UpdateDustCountText();
@@ -37,6 +41,16 @@ public class Player : MonoBehaviour {
         return this.dustCount;
     }
 
+    public void SetIsInSpaceShip(bool _isInSpaceShip)
+    {
+        this.isInSpaceShip = _isInSpaceShip;
+    }
+
+    public bool GetIsInSpaceShip()
+    {
+        return this.isInSpaceShip;
+    }
+
     public void UpdateDustCountText()
     {
         GameObject obj =  GameObject.Find("DustCountText");
@@ -46,6 +60,30 @@ public class Player : MonoBehaviour {
     public void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.tag == "Asteroid") respawn();
+    }
+
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "SpaceShip" && this.dustCount == maxDustCount)
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            this.isInSpaceShip = true;
+            this.transform.position = new Vector3(col.gameObject.transform.position.x, col.gameObject.transform.position.y, 1);
+            this.transform.rotation = new Quaternion(0, 0, -col.gameObject.transform.rotation.z, col.gameObject.transform.rotation.w);
+
+            GetComponent<PlayerMove>().enabled = false;
+            GetComponent<Repulse>().enabled = false;
+            GetComponent<AudioSource>().Stop();
+
+            col.gameObject.GetComponent<PlayerMove>().enabled = true;
+            col.gameObject.GetComponent<Repulse>().enabled = true;
+            col.gameObject.GetComponent<SpaceShip>().enabled = true;
+            col.gameObject.GetComponent<Animator>().Stop();
+            col.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            col.gameObject.GetComponent<PolygonCollider2D>().enabled = true;
+
+            gameObject.SetActive(false);
+        }
     }
 
     public void QuitLevel()
