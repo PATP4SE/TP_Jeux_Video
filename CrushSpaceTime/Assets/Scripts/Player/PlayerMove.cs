@@ -117,4 +117,9 @@ public class PlayerMove : MonoBehaviour {
 
         return areAllOtherKeysReleased;
     }
+
+    public Boundary getBoundary()
+    {
+        return boundary;
+    }
 }

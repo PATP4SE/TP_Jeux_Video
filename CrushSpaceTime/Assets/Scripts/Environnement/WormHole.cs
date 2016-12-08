@@ -13,11 +13,12 @@ public class WormHole : MonoBehaviour {
 	
 	}
 
-    public void OnTriggerEnter2D(Collider2D col)
+    public void OnTriggerEnter2D(Collider2D other)
     {
-        if (col.gameObject.tag == "SpaceShip")
+        if (other.gameObject.tag == "SpaceShip")
         {
-            col.gameObject.GetComponent<Player>().QuitLevel();
+            Destroy(other.gameObject);
+            GetComponent<GameController>().finishLevel();
         }
     }
 }

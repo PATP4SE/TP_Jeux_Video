@@ -18,6 +18,9 @@ public class GameController : MonoBehaviour {
     [SerializeField] private float timeAlteration;
     private float oldTimeAlteration;
     private AudioSource musicBackground;
+    private GameObject spaceship;
+    private GameObject wormhole;
+
 
     void Start () {
         StartCoroutine(makeLevelTextAppearDisappear());
@@ -26,6 +29,9 @@ public class GameController : MonoBehaviour {
         timeAlteration = GameObject.Find("TimeManipulationSlider").GetComponent<Slider>().value;
         waveWait = 0;
         musicBackground = GetComponent<AudioSource>();
+        spaceship = GameObject.FindGameObjectWithTag("SpaceShip");
+        wormhole = GameObject.FindGameObjectWithTag("Wormhole");
+
         StartCoroutine(spawnWaves());
     }
 
@@ -48,6 +54,9 @@ public class GameController : MonoBehaviour {
             spawnWait = 0;
 
         musicBackground.pitch = Time.timeScale * timeAlteration;
+        spaceship.GetComponent<Animator>().speed = Time.timeScale * Mathf.Abs(timeAlteration);
+        wormhole.GetComponent<Animator>().speed = Time.timeScale* Mathf.Abs(timeAlteration);
+
         oldTimeAlteration = timeAlteration;
 
     }
@@ -80,5 +89,13 @@ public class GameController : MonoBehaviour {
     public float getTimeAlteration()
     {
         return timeAlteration;
+    }
+
+    public IEnumerator finishLevel()
+    {
+        yield return new WaitForSeconds(LEVEL_TEXT_TIME);
+        GameObject levelText = GameObject.Find("LevelText");
+        levelText.GetComponent<Text>().text = ("Niveau 1 - Premier jouable");
+        Destroy(levelText, LEVEL_TEXT_TIME);
     }
 }
