@@ -11,13 +11,16 @@ public class GameController : MonoBehaviour {
 
     [SerializeField] private GameObject hazard;
     [SerializeField] private Vector3 spawnValues;
+    [SerializeField] private float spawnWidth;
     [SerializeField] private int hazardCount;
     [SerializeField] private float spawnWait;
     [SerializeField] private float startWait;
     [SerializeField] private float waveWait;
     [SerializeField] private float timeAlteration;
+    private GameObject levelText;
     private float oldTimeAlteration;
     private AudioSource musicBackground;
+    private GameObject player;
     private GameObject spaceship;
     private GameObject wormhole;
 
@@ -29,14 +32,21 @@ public class GameController : MonoBehaviour {
         timeAlteration = GameObject.Find("TimeManipulationSlider").GetComponent<Slider>().value;
         waveWait = 0;
         musicBackground = GetComponent<AudioSource>();
+        player = GameObject.FindGameObjectWithTag("Player");
         spaceship = GameObject.FindGameObjectWithTag("SpaceShip");
         wormhole = GameObject.FindGameObjectWithTag("Wormhole");
+        levelText = GameObject.Find("LevelText");
 
         StartCoroutine(spawnWaves());
     }
 
     void Update()
     {
+        if (wormhole.GetComponent<WormHole>().gethasEnteredWormhole())
+        {
+            StartCoroutine(finishLevel());
+        }
+
         timeAlteration = GameObject.Find("TimeManipulationSlider").GetComponent<Slider>().value;
         GameObject.Find("TimeAlterationText").GetComponent<Text>().text = timeAlteration.ToString("F2");
         GameObject[] asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
@@ -54,7 +64,14 @@ public class GameController : MonoBehaviour {
             spawnWait = 0;
 
         musicBackground.pitch = Time.timeScale * timeAlteration;
-        spaceship.GetComponent<Animator>().speed = Time.timeScale * Mathf.Abs(timeAlteration);
+        if(!player.GetComponent<Player>().GetIsInSpaceShip())
+        {
+            spaceship.GetComponent<Animator>().speed = Time.timeScale * Mathf.Abs(timeAlteration);
+        } else
+        {
+            spaceship.GetComponent<Animator>().speed = Time.timeScale;
+        }
+        
         wormhole.GetComponent<Animator>().speed = Time.timeScale* Mathf.Abs(timeAlteration);
 
         oldTimeAlteration = timeAlteration;
@@ -68,7 +85,7 @@ public class GameController : MonoBehaviour {
             for (int i = 0; i < hazardCount; i++)
             {
                 yield return new WaitForSeconds(startWait);
-                Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
+                Vector3 spawnPosition = new Vector3(Random.Range(spawnValues.x - spawnWidth, spawnValues.x + spawnWidth), spawnValues.y, spawnValues.z);
                 Quaternion spawnRotation = Quaternion.identity;
                 if (timeAlteration > MIN_SPAWN_CREATION_WAIT)
                     Instantiate(hazard, spawnPosition, spawnRotation);
@@ -81,9 +98,10 @@ public class GameController : MonoBehaviour {
     IEnumerator makeLevelTextAppearDisappear()
     {
         yield return new WaitForSeconds(LEVEL_TEXT_TIME);
-        GameObject levelText = GameObject.Find("LevelText");
         levelText.GetComponent<Text>().text = ("Niveau 1 - Premier jouable");
-        Destroy(levelText, LEVEL_TEXT_TIME);
+
+        yield return new WaitForSeconds(LEVEL_TEXT_TIME);
+        levelText.GetComponent<Text>().text = "";
     }
 
     public float getTimeAlteration()
@@ -94,8 +112,6 @@ public class GameController : MonoBehaviour {
     public IEnumerator finishLevel()
     {
         yield return new WaitForSeconds(LEVEL_TEXT_TIME);
-        GameObject levelText = GameObject.Find("LevelText");
-        levelText.GetComponent<Text>().text = ("Niveau 1 - Premier jouable");
-        Destroy(levelText, LEVEL_TEXT_TIME);
+        levelText.GetComponent<Text>().text = ("Niveau 1 - Terminé");
     }
 }

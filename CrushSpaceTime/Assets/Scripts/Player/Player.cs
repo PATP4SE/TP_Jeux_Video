@@ -78,7 +78,6 @@ public class Player : MonoBehaviour {
             col.gameObject.GetComponent<PlayerMove>().enabled = true;
             col.gameObject.GetComponent<Repulse>().enabled = true;
             col.gameObject.GetComponent<SpaceShip>().enabled = true;
-            col.gameObject.GetComponent<Animator>().Stop();
             col.gameObject.GetComponent<BoxCollider2D>().enabled = false;
             col.gameObject.GetComponent<PolygonCollider2D>().enabled = true;
 
