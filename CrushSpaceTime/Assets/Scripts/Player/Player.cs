@@ -5,9 +5,11 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
     private int dustCount;
+    private int woodCount;
     private bool isInSpaceShip;
 
     [SerializeField] private int maxDustCount;
+    [SerializeField] private int maxWoodCount;
     [SerializeField] private Vector2 spawnCoordinates;
 
     private Collider2D coll;
@@ -32,11 +34,25 @@ public class Player : MonoBehaviour {
         if (this.dustCount < maxDustCount)
         {
             this.dustCount++;
-            UpdateDustCountText();
+            UpdateUIDust();
         }   
     }
 
     public int GetDustCount()
+    {
+        return this.dustCount;
+    }
+
+    public void AddWood()
+    {
+        if (this.dustCount < maxDustCount)
+        {
+            this.dustCount++;
+            UpdateUIDust();
+        }
+    }
+
+    public int GetWoodCount()
     {
         return this.dustCount;
     }
@@ -51,9 +67,26 @@ public class Player : MonoBehaviour {
         return this.isInSpaceShip;
     }
 
-    public void UpdateDustCountText()
+    public void UpdateUIDust()
     {
-        GameObject obj =  GameObject.Find("DustCountText");
+        GameObject.Find("DustCountText").GetComponent<Text>().text = this.dustCount + "/10";
+
+        GameObject obj = GameObject.Find("AsteroidDustInventory");
+        Color color = obj.GetComponent<Image>().color;
+
+        if (this.dustCount > 0)
+        {
+            obj.GetComponent<Image>().color = new Color(color.r, color.g, color.b, 255);
+        }
+        else
+        {
+            obj.GetComponent<Image>().color = new Color(color.r, color.g, color.b, 255);
+        }
+    }
+
+    public void UpdateUIWood()
+    {
+        GameObject obj = GameObject.Find("DustCountText");
         obj.GetComponent<Text>().text = this.dustCount + "/10";
     }
 
