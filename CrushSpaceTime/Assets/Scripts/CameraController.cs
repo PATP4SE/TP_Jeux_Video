@@ -34,8 +34,8 @@ public class CameraController : MonoBehaviour {
         {
             transform.position = new Vector3
             (
-                Mathf.Clamp(player.transform.position.x, boundary.xMin + cameraWidth * 0.5f, boundary.xMax - cameraWidth * 0.5f),
-                Mathf.Clamp(player.transform.position.y, boundary.yMin + cameraHeight * 0.5f, boundary.yMax - cameraHeight * 0.5f),
+                Mathf.Clamp(player.transform.position.x, boundary.xMin - player.transform.localScale.x + cameraWidth * 0.5f, boundary.xMax + player.transform.localScale.x - cameraWidth * 0.5f),
+                Mathf.Clamp(player.transform.position.y, boundary.yMin - player.transform.localScale.y + cameraHeight * 0.5f, boundary.yMax + player.transform.localScale.y - cameraHeight * 0.5f),
                 -5.0f
             );
         }

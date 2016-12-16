@@ -11,10 +11,13 @@ public class PlayerMove : MonoBehaviour {
 
     [SerializeField] private Boundary boundary;
     [SerializeField] private float speed = 0;
+    [SerializeField] private ParticleSystem particlesLeft;
+    [SerializeField] private ParticleSystem particlesTop;
+    [SerializeField] private ParticleSystem particlesRight;
+    [SerializeField] private ParticleSystem particlesBottom;
 
     private Rigidbody2D rbody;
     private AudioSource launchAudio;
-
 
     // Use this for initialization
     void Start () {
@@ -32,7 +35,8 @@ public class PlayerMove : MonoBehaviour {
             rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
             transform.rotation = new Quaternion(0, 0, 0, 0);
-            
+
+            particlesTop.Play();
             if (areAllMovementKeysReleasedExceptKey(KeyCode.W) && !launchAudio.isPlaying) launchAudio.Play();
         }
         else if (Input.GetKey(KeyCode.A))
@@ -41,8 +45,9 @@ public class PlayerMove : MonoBehaviour {
             transform.LookAt(vect);
             rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
-            rotate(0, 0, 90);
+            rotate(0, 0, 0);
 
+            particlesLeft.Play();
             if (areAllMovementKeysReleasedExceptKey(KeyCode.A) && !launchAudio.isPlaying) launchAudio.Play();
         }
         else if (Input.GetKey(KeyCode.S))
@@ -51,8 +56,9 @@ public class PlayerMove : MonoBehaviour {
             transform.LookAt(vect);
             rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
-            rotate(0, 0, 180);
+            rotate(0, 0, 0);
 
+            particlesBottom.Play();
             if (areAllMovementKeysReleasedExceptKey(KeyCode.S) && !launchAudio.isPlaying) launchAudio.Play();
         }
         else if (Input.GetKey(KeyCode.D))
@@ -61,8 +67,9 @@ public class PlayerMove : MonoBehaviour {
             transform.LookAt(vect);
             rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
-            rotate(0, 0, -90);
+            rotate(0, 0, 0);
 
+            particlesRight.Play();
             if (areAllMovementKeysReleasedExceptKey(KeyCode.D) && !launchAudio.isPlaying) launchAudio.Play();
         }
 
@@ -73,8 +80,8 @@ public class PlayerMove : MonoBehaviour {
             0.0f
         );
 
-
         if (areAllMovementKeyReleased()) launchAudio.Stop();
+        stopParticlesEmission();
     }
 
     /************************************ PRIVATE METHODS ************************************/
@@ -116,6 +123,14 @@ public class PlayerMove : MonoBehaviour {
                 areAllOtherKeysReleased = true;
 
         return areAllOtherKeysReleased;
+    }
+
+    private void stopParticlesEmission()
+    {
+        if (Input.GetKeyUp(KeyCode.W)) particlesTop.Stop();
+        if (Input.GetKeyUp(KeyCode.A)) particlesLeft.Stop();
+        if (Input.GetKeyUp(KeyCode.S)) particlesBottom.Stop();
+        if (Input.GetKeyUp(KeyCode.D)) particlesRight.Stop();
     }
 
     public Boundary getBoundary()

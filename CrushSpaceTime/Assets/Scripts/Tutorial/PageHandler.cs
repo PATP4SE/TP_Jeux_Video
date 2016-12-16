@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PageHandler : MonoBehaviour {
 
@@ -35,7 +36,7 @@ public class PageHandler : MonoBehaviour {
         }
         else
         {
-            //load main scene.
+            SceneManager.LoadScene(1);
         }
     }
 

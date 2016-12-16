@@ -5,6 +5,7 @@ public class Repulse : MonoBehaviour {
 
     [SerializeField] private float radius = 0f;
     [SerializeField] private float repulseStrenght = 0f;
+    [SerializeField] private ParticleSystem particle;
 
     // Use this for initialization
     void Start ()
@@ -16,8 +17,9 @@ public class Repulse : MonoBehaviour {
 	void Update ()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
+            particle.Play();
             Object[] objects = GameObject.FindObjectsOfType(typeof(GameObject));
 
             foreach (GameObject obj in objects)
@@ -28,7 +30,11 @@ public class Repulse : MonoBehaviour {
                     obj.GetComponent<Mover>().setRepulsed(true);
                 }
             }
+        } else
+        {
+            particle.Stop();
         }
+
     }
 
 
