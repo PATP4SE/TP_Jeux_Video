@@ -54,7 +54,7 @@ public class PageHandler : MonoBehaviour {
         }
         else
         {
-            //return to main menu
+            SceneManager.LoadScene(0);
         }
     }
 
