@@ -22,10 +22,10 @@ public class Portal : MonoBehaviour {
 
     public void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player" && switchPortal != null && !player.GetComponent<Player>().GetTeleported())
+        if (col.gameObject.tag == "Player" && switchPortal != null && !player.GetComponent<Player>().GetTriggerDisabled())
         {
-            player.GetComponent<Player>().Teleport(secondsUntilReuse);
-            player.transform.position = switchPortal.transform.position;
+            player.GetComponent<Player>().DisableTriggerCollision(secondsUntilReuse);
+            player.transform.position = new Vector3(switchPortal.transform.position.x, switchPortal.transform.position.y, -1);
         }
     }
 
@@ -40,6 +40,7 @@ public class Portal : MonoBehaviour {
                 Gizmos.color = Color.red;
                 Gizmos.DrawSphere(obj.transform.position,0.3f);
                 Gizmos.DrawLine(obj.transform.position, obj.GetComponent<Portal>().switchPortal.transform.position);
+
             }
         }
     }

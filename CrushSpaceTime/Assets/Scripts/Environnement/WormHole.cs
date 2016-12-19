@@ -21,7 +21,8 @@ public class WormHole : MonoBehaviour {
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "SpaceShip")
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (other.gameObject.tag == "SpaceShip" && player.GetComponent<Player>().GetEnergyCount() == player.GetComponent<Player>().GetMaxEnergyCount())
         {
             spaceShipAnim.SetBool("isOverWormhole", true);
             spaceShipAnim.Play("SpaceShip_Disapear");
