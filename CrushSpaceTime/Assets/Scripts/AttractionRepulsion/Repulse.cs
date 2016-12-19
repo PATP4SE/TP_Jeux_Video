@@ -6,12 +6,13 @@ public class Repulse : MonoBehaviour {
     [SerializeField] private float radius = 0f;
     [SerializeField] private float repulseStrenght = 0f;
     [SerializeField] private ParticleSystem particle;
+    private GameController gameControllerScript;
 
     // Use this for initialization
     void Start ()
     {
-	
-	}
+        gameControllerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -30,7 +31,7 @@ public class Repulse : MonoBehaviour {
                     obj.GetComponent<Mover>().setRepulsed(true);
                 }
             }
-        } else
+        } else if(!Input.GetKey(KeyCode.Space) && !gameControllerScript.GetIsInSpaceShip())
         {
             particle.Stop();
         }

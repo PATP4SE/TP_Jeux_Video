@@ -6,7 +6,6 @@ public class Player : MonoBehaviour {
 
     private int dustCount;
     private int woodCount;
-    private bool isInSpaceShip;
     private bool teleported;
 
     [SerializeField] private int maxDustCount;
@@ -19,7 +18,6 @@ public class Player : MonoBehaviour {
     void Start ()
     {
         this.teleported = false;
-        this.isInSpaceShip = false;
         dustCount = 0;
         coll = GetComponent<Collider2D>();
         respawn();
@@ -59,16 +57,6 @@ public class Player : MonoBehaviour {
         return this.dustCount;
     }
 
-    public void SetIsInSpaceShip(bool _isInSpaceShip)
-    {
-        this.isInSpaceShip = _isInSpaceShip;
-    }
-
-    public bool GetIsInSpaceShip()
-    {
-        return this.isInSpaceShip;
-    }
-
     public void Teleport(float seconds)
     {
         this.teleported = true;
@@ -105,7 +93,11 @@ public class Player : MonoBehaviour {
 
     public void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Asteroid") respawn();
+        if (col.gameObject.tag == "Asteroid")
+        {
+            GetComponents<AudioSource>()[1].Play();
+            respawn();
+        }
     }
 
     public void OnTriggerEnter2D(Collider2D col)
@@ -113,7 +105,7 @@ public class Player : MonoBehaviour {
         if (col.gameObject.tag == "SpaceShip" && this.dustCount == maxDustCount)
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-            this.isInSpaceShip = true;
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().SetIsInSpaceShip(true);
             this.transform.position = new Vector3(col.gameObject.transform.position.x, col.gameObject.transform.position.y, 1);
             this.transform.rotation = new Quaternion(0, 0, -col.gameObject.transform.rotation.z, col.gameObject.transform.rotation.w);
 
