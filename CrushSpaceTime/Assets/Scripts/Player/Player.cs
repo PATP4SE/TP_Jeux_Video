@@ -7,6 +7,7 @@ public class Player : MonoBehaviour {
     private int dustCount;
     private int woodCount;
     private bool isInSpaceShip;
+    private bool teleported;
 
     [SerializeField] private int maxDustCount;
     [SerializeField] private int maxWoodCount;
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        this.teleported = false;
         this.isInSpaceShip = false;
         dustCount = 0;
         coll = GetComponent<Collider2D>();
@@ -65,6 +67,17 @@ public class Player : MonoBehaviour {
     public bool GetIsInSpaceShip()
     {
         return this.isInSpaceShip;
+    }
+
+    public void Teleport(float seconds)
+    {
+        this.teleported = true;
+        StartCoroutine(Wait(seconds));
+    }
+
+    public bool GetTeleported()
+    {
+        return this.teleported;
     }
 
     public void UpdateUIDust()
@@ -128,6 +141,12 @@ public class Player : MonoBehaviour {
     {
         transform.position = spawnCoordinates;
         GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+    }
+
+    private IEnumerator Wait(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        this.teleported = false;
     }
 
 }
