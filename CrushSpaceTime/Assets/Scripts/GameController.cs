@@ -100,12 +100,7 @@ public class GameController : MonoBehaviour {
 
     IEnumerator makeLevelTextAppearDisappear()
     {
-        yield return new WaitForSeconds(LEVEL_TEXT_TIME);
-<<<<<<< HEAD
         levelText.GetComponent<Text>().text = (startTitle);
-=======
-        levelText.GetComponent<Text>().text = ("Niveau 1");
->>>>>>> origin/master
 
         yield return new WaitForSeconds(LEVEL_TEXT_TIME);
         levelText.GetComponent<Text>().text = "";

@@ -5,14 +5,9 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
     private int dustCount;
-<<<<<<< HEAD
     private int energyCount;
     private bool isInSpaceShip;
     private bool triggerDisabled;
-=======
-    private int woodCount;
-    private bool teleported;
->>>>>>> origin/master
 
     [SerializeField] private int maxDustCount;
     [SerializeField] private int maxEnergyCount;
@@ -23,12 +18,8 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-<<<<<<< HEAD
         this.triggerDisabled = false;
         this.isInSpaceShip = false;
-=======
-        this.teleported = false;
->>>>>>> origin/master
         dustCount = 0;
         energyCount = 0;
         coll = GetComponent<Collider2D>();
@@ -92,7 +83,6 @@ public class Player : MonoBehaviour {
         UpdateUIEnergy();
     }
 
-<<<<<<< HEAD
     public void SetIsInSpaceShip(bool _isInSpaceShip)
     {
         this.isInSpaceShip = _isInSpaceShip;
@@ -104,9 +94,6 @@ public class Player : MonoBehaviour {
     }
 
     public void DisableTriggerCollision(float seconds)
-=======
-    public void Teleport(float seconds)
->>>>>>> origin/master
     {
         this.triggerDisabled = true;
         StartCoroutine(Wait(seconds));
@@ -174,14 +161,12 @@ public class Player : MonoBehaviour {
         if (col.gameObject.tag == "SpaceShip" && this.dustCount == maxDustCount && !GetTriggerDisabled())
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-<<<<<<< HEAD
+
             this.isInSpaceShip = true;
             this.transform.position = new Vector3(col.gameObject.transform.position.x, col.gameObject.transform.position.y, 2);
-=======
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().SetIsInSpaceShip(true);
-            this.transform.position = new Vector3(col.gameObject.transform.position.x, col.gameObject.transform.position.y, 1);
->>>>>>> origin/master
             this.transform.rotation = new Quaternion(0, 0, -col.gameObject.transform.rotation.z, col.gameObject.transform.rotation.w);
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().SetIsInSpaceShip(true);
+            
 
             GetComponent<PlayerMove>().enabled = false;
             GetComponent<Repulse>().enabled = false;
