@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour {
     private GameObject player;
     private GameObject spaceship;
     private GameObject wormhole;
+    private bool isPlayerInSpaceShip;
 
     void Start () {
         StartCoroutine(makeLevelTextAppearDisappear());
@@ -37,6 +38,7 @@ public class GameController : MonoBehaviour {
         spaceship = GameObject.FindGameObjectWithTag("SpaceShip");
         wormhole = GameObject.FindGameObjectWithTag("Wormhole");
         levelText = GameObject.Find("LevelText");
+        isPlayerInSpaceShip = false;
 
         StartCoroutine(spawnWaves());
     }
@@ -65,7 +67,7 @@ public class GameController : MonoBehaviour {
             spawnWait = 0;
 
         musicBackground.pitch = Time.timeScale * timeAlteration;
-        if(!player.GetComponent<Player>().GetIsInSpaceShip())
+        if(!GetIsInSpaceShip())
         {
             spaceship.GetComponent<Animator>().speed = Time.timeScale * Mathf.Abs(timeAlteration);
         } else
@@ -99,7 +101,11 @@ public class GameController : MonoBehaviour {
     IEnumerator makeLevelTextAppearDisappear()
     {
         yield return new WaitForSeconds(LEVEL_TEXT_TIME);
+<<<<<<< HEAD
         levelText.GetComponent<Text>().text = (startTitle);
+=======
+        levelText.GetComponent<Text>().text = ("Niveau 1");
+>>>>>>> origin/master
 
         yield return new WaitForSeconds(LEVEL_TEXT_TIME);
         levelText.GetComponent<Text>().text = "";
@@ -114,5 +120,16 @@ public class GameController : MonoBehaviour {
     {
         yield return new WaitForSeconds(LEVEL_TEXT_TIME);
         levelText.GetComponent<Text>().text = (endTitle);
+    }
+
+
+    public void SetIsInSpaceShip(bool _isInSpaceShip)
+    {
+        this.isPlayerInSpaceShip = _isInSpaceShip;
+    }
+
+    public bool GetIsInSpaceShip()
+    {
+        return this.isPlayerInSpaceShip;
     }
 }

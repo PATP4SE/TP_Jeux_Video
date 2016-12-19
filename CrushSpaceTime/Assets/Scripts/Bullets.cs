@@ -50,17 +50,19 @@ public class Bullets : MonoBehaviour {
 
     public void OnTriggerEnter2D(Collider2D col)
     {
-        print("asdasdasd");
         if (col.gameObject.name.Contains("AsteroidWithoutMovement"))
         {
+            AudioSource audio = col.gameObject.GetComponent<AudioSource>();
+            audio.Play();
+
+            col.GetComponent<Renderer>().enabled = false;
             Destroy(this.gameObject);
-            Destroy(col.gameObject);
+            Destroy(col.gameObject, audio.clip.length);
         }
     }
 
     public void OnCollisionEnter2D(Collision2D col)
     {
-        print("222");
         if (col.gameObject.name.Contains("AsteroidWithoutMovement"))
         {
             Destroy(this.gameObject);

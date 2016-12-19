@@ -9,19 +9,22 @@ public class CameraController : MonoBehaviour {
     private float cameraHeight;
     private float cameraWidth;
     private Boundary boundary;
+    private GameController gameControllerScript;
+
     //[SerializeField] private float speed = 0;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         camera = Camera.main;
         cameraHeight = 2f * camera.orthographicSize;
         cameraWidth = cameraHeight * camera.aspect;
         boundary = player.GetComponent<PlayerMove>().getBoundary();
-	}
+        gameControllerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+    }
 	
 	// Update is called once per frame
 	void LateUpdate () {
-        if (player.GetComponent<Player>().GetIsInSpaceShip())
+        if (gameControllerScript.GetIsInSpaceShip())
         {
             transform.position = new Vector3
             (

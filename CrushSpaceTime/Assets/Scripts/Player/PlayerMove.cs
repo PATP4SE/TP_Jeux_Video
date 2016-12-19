@@ -18,11 +18,13 @@ public class PlayerMove : MonoBehaviour {
 
     private Rigidbody2D rbody;
     private AudioSource launchAudio;
+    private GameController gameControllerScript;
 
     // Use this for initialization
     void Start () {
         rbody = GetComponent<Rigidbody2D>();
         launchAudio = GetComponent<AudioSource>();
+        gameControllerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 
     // Update is called once per frame
@@ -34,9 +36,12 @@ public class PlayerMove : MonoBehaviour {
             transform.LookAt(vect);
             rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
-            transform.rotation = new Quaternion(0, 0, 0, 0);
+            if (!gameControllerScript.GetIsInSpaceShip())
+            {
+                transform.rotation = new Quaternion(0, 0, 0, 0);
+                particlesTop.Play();
+            }else rotate(0, 0, 0);
 
-            particlesTop.Play();
             if (areAllMovementKeysReleasedExceptKey(KeyCode.W) && !launchAudio.isPlaying) launchAudio.Play();
         }
         else if (Input.GetKey(KeyCode.A))
@@ -45,9 +50,14 @@ public class PlayerMove : MonoBehaviour {
             transform.LookAt(vect);
             rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
-            rotate(0, 0, 0);
+            if(!gameControllerScript.GetIsInSpaceShip())
+            {
+                rotate(0, 0, 0);
+                transform.Rotate(new Vector3(0, 0, 0));
+                particlesLeft.Play();
+            } else rotate(0, 0, 90);
 
-            particlesLeft.Play();
+
             if (areAllMovementKeysReleasedExceptKey(KeyCode.A) && !launchAudio.isPlaying) launchAudio.Play();
         }
         else if (Input.GetKey(KeyCode.S))
@@ -56,9 +66,12 @@ public class PlayerMove : MonoBehaviour {
             transform.LookAt(vect);
             rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
-            rotate(0, 0, 0);
+            if (!gameControllerScript.GetIsInSpaceShip())
+            {
+                rotate(0, 0, 0);
+                particlesBottom.Play();
+            } else rotate(0, 0, 180);
 
-            particlesBottom.Play();
             if (areAllMovementKeysReleasedExceptKey(KeyCode.S) && !launchAudio.isPlaying) launchAudio.Play();
         }
         else if (Input.GetKey(KeyCode.D))
@@ -67,9 +80,12 @@ public class PlayerMove : MonoBehaviour {
             transform.LookAt(vect);
             rbody.AddForce(transform.forward * speed, ForceMode2D.Impulse);
 
-            rotate(0, 0, 0);
+            if (!gameControllerScript.GetIsInSpaceShip())
+            {
+                rotate(0, 0, 0);
+                particlesRight.Play();
+            } else rotate(0, 0, -90);
 
-            particlesRight.Play();
             if (areAllMovementKeysReleasedExceptKey(KeyCode.D) && !launchAudio.isPlaying) launchAudio.Play();
         }
 
@@ -81,7 +97,7 @@ public class PlayerMove : MonoBehaviour {
         );
 
         if (areAllMovementKeyReleased()) launchAudio.Stop();
-        stopParticlesEmission();
+        if (!gameControllerScript.GetIsInSpaceShip()) stopParticlesEmission();
     }
 
     /************************************ PRIVATE METHODS ************************************/
