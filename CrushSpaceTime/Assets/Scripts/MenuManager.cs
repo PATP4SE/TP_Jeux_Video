@@ -27,23 +27,7 @@ public class MenuManager : MonoBehaviour {
         optionsCanvas.SetActive(false);
         isOptionPanelActive = false;
 
-        if (!PlayerPrefs.HasKey("UpPref")) PlayerPrefs.SetString("UpPref", "W");
-        if (!PlayerPrefs.HasKey("LeftPref")) PlayerPrefs.SetString("LeftPref", "A");
-        if (!PlayerPrefs.HasKey("DownPref")) PlayerPrefs.SetString("DownPref", "S");
-        if (!PlayerPrefs.HasKey("RightPref")) PlayerPrefs.SetString("RightPref", "D");
-        if (!PlayerPrefs.HasKey("RepulsePref")) PlayerPrefs.SetString("RepulsePref", "Space");
-
-        upInput.text = PlayerPrefs.GetString("UpPref");
-        leftInput.text = PlayerPrefs.GetString("LeftPref");
-        downInput.text = PlayerPrefs.GetString("DownPref");
-        rightInput.text = PlayerPrefs.GetString("RightPref");
-        repulseInput.text = PlayerPrefs.GetString("RepulsePref");
-
-        if (upInput.text.Contains("Up")) upInput.text = "Fleche Haut";
-        if (leftInput.text.Contains("Left")) leftInput.text = "Fleche Gauche";
-        if (downInput.text.Contains("Down")) downInput.text = "Fleche Bas";
-        if (rightInput.text.Contains("Right")) rightInput.text = "Fleche Droite";
-        if (repulseInput.text.Contains("Space")) repulseInput.text = "Espace";
+        setAllCommands();
     }
 
     void Update()
@@ -84,6 +68,10 @@ public class MenuManager : MonoBehaviour {
                     focusedIF.text = "Espace";
                     repulse = "Space";
                 }
+                else if (focusedIF.text.Length >= 2 && !focusedIF.text.Contains("Espace") && !focusedIF.text.Contains("Fleche"))
+                {
+                    focusedIF.text = focusedIF.text.Substring(focusedIF.text.Length-1);
+                }
             }
         }
     }
@@ -102,6 +90,7 @@ public class MenuManager : MonoBehaviour {
 
     public void OnClickCancel()
     {
+        setAllCommands();
         menuCanvas.SetActive(true);
         optionsCanvas.SetActive(false);
         isOptionPanelActive = false;
@@ -123,6 +112,27 @@ public class MenuManager : MonoBehaviour {
         PlayerPrefs.SetString("DownPref", down);
         PlayerPrefs.SetString("RightPref", right);
         PlayerPrefs.SetString("RepulsePref", repulse);
+    }
+
+    private void setAllCommands()
+    {
+        if (!PlayerPrefs.HasKey("UpPref")) PlayerPrefs.SetString("UpPref", "W");
+        if (!PlayerPrefs.HasKey("LeftPref")) PlayerPrefs.SetString("LeftPref", "A");
+        if (!PlayerPrefs.HasKey("DownPref")) PlayerPrefs.SetString("DownPref", "S");
+        if (!PlayerPrefs.HasKey("RightPref")) PlayerPrefs.SetString("RightPref", "D");
+        if (!PlayerPrefs.HasKey("RepulsePref")) PlayerPrefs.SetString("RepulsePref", "Space");
+
+        upInput.text = PlayerPrefs.GetString("UpPref");
+        leftInput.text = PlayerPrefs.GetString("LeftPref");
+        downInput.text = PlayerPrefs.GetString("DownPref");
+        rightInput.text = PlayerPrefs.GetString("RightPref");
+        repulseInput.text = PlayerPrefs.GetString("RepulsePref");
+
+        if (upInput.text.Contains("Up")) upInput.text = "Fleche Haut";
+        if (leftInput.text.Contains("Left")) leftInput.text = "Fleche Gauche";
+        if (downInput.text.Contains("Down")) downInput.text = "Fleche Bas";
+        if (rightInput.text.Contains("Right")) rightInput.text = "Fleche Droite";
+        if (repulseInput.text.Contains("Space")) repulseInput.text = "Espace";
     }
 
     public void Quit()
