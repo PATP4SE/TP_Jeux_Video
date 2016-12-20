@@ -5,11 +5,12 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
     private int dustCount;
-    private int woodCount;
-    private bool teleported;
+    private int energyCount;
+    private bool isInSpaceShip;
+    private bool triggerDisabled;
 
     [SerializeField] private int maxDustCount;
-    [SerializeField] private int maxWoodCount;
+    [SerializeField] private int maxEnergyCount;
     [SerializeField] private Vector2 spawnCoordinates;
 
     private Collider2D coll;
@@ -17,10 +18,13 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        this.teleported = false;
+        this.triggerDisabled = false;
+        this.isInSpaceShip = false;
         dustCount = 0;
+        energyCount = 0;
         coll = GetComponent<Collider2D>();
         respawn();
+        UpdateWormholeAnimation();
     }
 	
 	// Update is called once per frame
@@ -43,34 +47,66 @@ public class Player : MonoBehaviour {
         return this.dustCount;
     }
 
-    public void AddWood()
+    public int GetMaxDustCount()
     {
-        if (this.dustCount < maxDustCount)
+        return this.maxDustCount;
+    }
+
+    public void emptyDust()
+    {
+        this.dustCount = 0;
+        UpdateUIDust();
+    }
+
+    public void AddEnergy()
+    {
+        if (this.energyCount < maxDustCount)
         {
-            this.dustCount++;
-            UpdateUIDust();
+            this.energyCount++;
+            UpdateUIEnergy();
         }
     }
 
-    public int GetWoodCount()
+    public int GetEnergyCount()
     {
-        return this.dustCount;
+        return this.energyCount;
     }
 
-    public void Teleport(float seconds)
+    public int GetMaxEnergyCount()
     {
-        this.teleported = true;
+        return this.maxEnergyCount;
+    }
+
+    public void emptyEnergy()
+    {
+        this.energyCount = 0;
+        UpdateUIEnergy();
+    }
+
+    public void SetIsInSpaceShip(bool _isInSpaceShip)
+    {
+        this.isInSpaceShip = _isInSpaceShip;
+    }
+
+    public bool GetIsInSpaceShip()
+    {
+        return this.isInSpaceShip;
+    }
+
+    public void DisableTriggerCollision(float seconds)
+    {
+        this.triggerDisabled = true;
         StartCoroutine(Wait(seconds));
     }
 
-    public bool GetTeleported()
+    public bool GetTriggerDisabled()
     {
-        return this.teleported;
+        return this.triggerDisabled;
     }
 
     public void UpdateUIDust()
     {
-        GameObject.Find("DustCountText").GetComponent<Text>().text = this.dustCount + "/10";
+        GameObject.Find("DustCountText").GetComponent<Text>().text = this.dustCount + "/" + this.maxDustCount;
 
         GameObject obj = GameObject.Find("AsteroidDustInventory");
         Color color = obj.GetComponent<Image>().color;
@@ -85,10 +121,30 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void UpdateUIWood()
+    public void UpdateUIEnergy()
     {
-        GameObject obj = GameObject.Find("DustCountText");
-        obj.GetComponent<Text>().text = this.dustCount + "/10";
+        GameObject.Find("EnergyCountText").GetComponent<Text>().text = this.energyCount + "/" + this.maxEnergyCount;
+
+        GameObject obj = GameObject.Find("EnergyInventory");
+        Color color = obj.GetComponent<Image>().color;
+
+        if (this.energyCount > 0)
+        {
+            obj.GetComponent<Image>().color = new Color(color.r, color.g, color.b, 255);
+        }
+        else
+        {
+            obj.GetComponent<Image>().color = new Color(color.r, color.g, color.b, 255);
+        }
+        UpdateWormholeAnimation();
+    }
+
+    private void UpdateWormholeAnimation()
+    {
+        if (this.energyCount >= this.maxEnergyCount)
+        {
+            GameObject.Find("Wormhole").GetComponent<Animator>().enabled = true;
+        }
     }
 
     public void OnCollisionEnter2D(Collision2D col)
@@ -102,15 +158,19 @@ public class Player : MonoBehaviour {
 
     public void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "SpaceShip" && this.dustCount == maxDustCount)
+        if (col.gameObject.tag == "SpaceShip" && this.dustCount == maxDustCount && !GetTriggerDisabled())
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().SetIsInSpaceShip(true);
-            this.transform.position = new Vector3(col.gameObject.transform.position.x, col.gameObject.transform.position.y, 1);
+
+            this.isInSpaceShip = true;
+            this.transform.position = new Vector3(col.gameObject.transform.position.x, col.gameObject.transform.position.y, 2);
             this.transform.rotation = new Quaternion(0, 0, -col.gameObject.transform.rotation.z, col.gameObject.transform.rotation.w);
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().SetIsInSpaceShip(true);
+            
 
             GetComponent<PlayerMove>().enabled = false;
             GetComponent<Repulse>().enabled = false;
+            GetComponent<CircleCollider2D>().enabled = false;
             GetComponent<AudioSource>().Stop();
 
             col.gameObject.GetComponent<PlayerMove>().enabled = true;
@@ -119,7 +179,9 @@ public class Player : MonoBehaviour {
             col.gameObject.GetComponent<BoxCollider2D>().enabled = false;
             col.gameObject.GetComponent<PolygonCollider2D>().enabled = true;
 
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+            //this.transform.position = 
+
         }
     }
 
@@ -131,14 +193,14 @@ public class Player : MonoBehaviour {
     /****************** PRIVATE METHODS **********************/
     private void respawn()
     {
-        transform.position = spawnCoordinates;
+        transform.position = new Vector3(spawnCoordinates.x, spawnCoordinates.y, -1);
         GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
     }
 
     private IEnumerator Wait(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        this.teleported = false;
+        this.triggerDisabled = false;
     }
 
 }

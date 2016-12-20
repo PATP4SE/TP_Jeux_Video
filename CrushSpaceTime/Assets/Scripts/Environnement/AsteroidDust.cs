@@ -5,13 +5,10 @@ public class AsteroidDust : MonoBehaviour
 {
 
 
-    [SerializeField]
-    private Transform parent = null;
-    [SerializeField]
-    private float pushStrenght = 0;
+    [SerializeField] private Transform parent = null;
+    [SerializeField] private float pushStrenght = 0;
 
-    [SerializeField]
-    private float attractionRadius = 0;
+    [SerializeField] private float attractionRadius = 0;
 
     private Rigidbody2D rbody;
 

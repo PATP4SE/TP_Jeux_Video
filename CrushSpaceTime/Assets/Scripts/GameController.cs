@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour {
     [SerializeField] private float startWait;
     [SerializeField] private float waveWait;
     [SerializeField] private float timeAlteration;
+    [SerializeField] private string startTitle;
+    [SerializeField] private string endTitle;
     private GameObject levelText;
     private float oldTimeAlteration;
     private AudioSource musicBackground;
@@ -24,7 +26,6 @@ public class GameController : MonoBehaviour {
     private GameObject spaceship;
     private GameObject wormhole;
     private bool isPlayerInSpaceShip;
-
 
     void Start () {
         StartCoroutine(makeLevelTextAppearDisappear());
@@ -99,8 +100,7 @@ public class GameController : MonoBehaviour {
 
     IEnumerator makeLevelTextAppearDisappear()
     {
-        yield return new WaitForSeconds(LEVEL_TEXT_TIME);
-        levelText.GetComponent<Text>().text = ("Niveau 1");
+        levelText.GetComponent<Text>().text = (startTitle);
 
         yield return new WaitForSeconds(LEVEL_TEXT_TIME);
         levelText.GetComponent<Text>().text = "";
@@ -114,7 +114,7 @@ public class GameController : MonoBehaviour {
     public IEnumerator finishLevel()
     {
         yield return new WaitForSeconds(LEVEL_TEXT_TIME);
-        levelText.GetComponent<Text>().text = ("Niveau 1 - Terminé");
+        levelText.GetComponent<Text>().text = (endTitle);
     }
 
 
