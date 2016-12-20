@@ -7,18 +7,20 @@ public class Repulse : MonoBehaviour {
     [SerializeField] private float repulseStrenght = 0f;
     [SerializeField] private ParticleSystem particle;
     private GameController gameControllerScript;
+    private KeyCode repulseKey;
 
     // Use this for initialization
     void Start ()
     {
         gameControllerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        repulseKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("RepulsePref"));
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(repulseKey))
         {
             particle.Play();
             Object[] objects = GameObject.FindObjectsOfType(typeof(GameObject));
@@ -31,7 +33,7 @@ public class Repulse : MonoBehaviour {
                     obj.GetComponent<Mover>().setRepulsed(true);
                 }
             }
-        } else if(!Input.GetKey(KeyCode.Space) && !gameControllerScript.GetIsInSpaceShip())
+        } else if(!Input.GetKey(repulseKey) && !gameControllerScript.GetIsInSpaceShip())
         {
             particle.Stop();
         }

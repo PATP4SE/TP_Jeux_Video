@@ -19,18 +19,26 @@ public class PlayerMove : MonoBehaviour {
     private Rigidbody2D rbody;
     private AudioSource launchAudio;
     private GameController gameControllerScript;
+    private KeyCode upKey;
+    private KeyCode leftKey;
+    private KeyCode downKey;
+    private KeyCode rightKey;
 
     // Use this for initialization
     void Start () {
         rbody = GetComponent<Rigidbody2D>();
         launchAudio = GetComponent<AudioSource>();
         gameControllerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        upKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("UpPref"));
+        leftKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("LeftPref"));
+        downKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("DownPref"));
+        rightKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("RightPref"));
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(upKey))
         {
             Vector3 vect = new Vector3(transform.position.x, transform.position.y + speed, transform.position.z);
             transform.LookAt(vect);
@@ -42,9 +50,9 @@ public class PlayerMove : MonoBehaviour {
                 particlesTop.Play();
             }else rotate(0, 0, 0);
 
-            if (areAllMovementKeysReleasedExceptKey(KeyCode.W) && !launchAudio.isPlaying) launchAudio.Play();
+            if (areAllMovementKeysReleasedExceptKey(upKey) && !launchAudio.isPlaying) launchAudio.Play();
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(leftKey))
         {
             Vector3 vect = new Vector3(transform.position.x - speed, transform.position.y, transform.position.z);
             transform.LookAt(vect);
@@ -58,9 +66,9 @@ public class PlayerMove : MonoBehaviour {
             } else rotate(0, 0, 90);
 
 
-            if (areAllMovementKeysReleasedExceptKey(KeyCode.A) && !launchAudio.isPlaying) launchAudio.Play();
+            if (areAllMovementKeysReleasedExceptKey(leftKey) && !launchAudio.isPlaying) launchAudio.Play();
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(downKey))
         {
             Vector3 vect = new Vector3(transform.position.x, transform.position.y - speed, transform.position.z);
             transform.LookAt(vect);
@@ -72,9 +80,9 @@ public class PlayerMove : MonoBehaviour {
                 particlesBottom.Play();
             } else rotate(0, 0, 180);
 
-            if (areAllMovementKeysReleasedExceptKey(KeyCode.S) && !launchAudio.isPlaying) launchAudio.Play();
+            if (areAllMovementKeysReleasedExceptKey(downKey) && !launchAudio.isPlaying) launchAudio.Play();
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(rightKey))
         {
             Vector3 vect = new Vector3(transform.position.x + speed, transform.position.y, transform.position.z);
             transform.LookAt(vect);
@@ -86,7 +94,7 @@ public class PlayerMove : MonoBehaviour {
                 particlesRight.Play();
             } else rotate(0, 0, -90);
 
-            if (areAllMovementKeysReleasedExceptKey(KeyCode.D) && !launchAudio.isPlaying) launchAudio.Play();
+            if (areAllMovementKeysReleasedExceptKey(rightKey) && !launchAudio.isPlaying) launchAudio.Play();
         }
 
         rbody.position = new Vector3
@@ -112,7 +120,7 @@ public class PlayerMove : MonoBehaviour {
     {
         bool areAllMovementKeyReleased = false;
 
-        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D))
+        if (!Input.GetKey(upKey) && !Input.GetKey(leftKey) && !Input.GetKey(downKey) && !Input.GetKey(rightKey))
             areAllMovementKeyReleased = true;
 
         return areAllMovementKeyReleased;
@@ -122,20 +130,20 @@ public class PlayerMove : MonoBehaviour {
     {
         bool areAllOtherKeysReleased = false;
 
-        if(key == KeyCode.W) 
-            if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D))
+        if(key == upKey) 
+            if(!Input.GetKey(leftKey) && !Input.GetKey(downKey) && !Input.GetKey(rightKey))
                 areAllOtherKeysReleased = true;
 
-        if(key == KeyCode.A)
-            if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D))
+        if(key == leftKey)
+            if (!Input.GetKey(upKey) && !Input.GetKey(downKey) && !Input.GetKey(rightKey))
             areAllOtherKeysReleased = true;
 
-        if (key == KeyCode.S)
-            if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.D))
+        if (key == downKey)
+            if (!Input.GetKey(leftKey) && !Input.GetKey(upKey) && !Input.GetKey(rightKey))
                 areAllOtherKeysReleased = true;
 
-        if (key == KeyCode.D)
-            if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+        if (key == rightKey)
+            if (!Input.GetKey(leftKey) && !Input.GetKey(downKey) && !Input.GetKey(upKey))
                 areAllOtherKeysReleased = true;
 
         return areAllOtherKeysReleased;
@@ -143,10 +151,10 @@ public class PlayerMove : MonoBehaviour {
 
     private void stopParticlesEmission()
     {
-        if (Input.GetKeyUp(KeyCode.W)) particlesTop.Stop();
-        if (Input.GetKeyUp(KeyCode.A)) particlesLeft.Stop();
-        if (Input.GetKeyUp(KeyCode.S)) particlesBottom.Stop();
-        if (Input.GetKeyUp(KeyCode.D)) particlesRight.Stop();
+        if (Input.GetKeyUp(upKey)) particlesTop.Stop();
+        if (Input.GetKeyUp(leftKey)) particlesLeft.Stop();
+        if (Input.GetKeyUp(downKey)) particlesBottom.Stop();
+        if (Input.GetKeyUp(rightKey)) particlesRight.Stop();
     }
 
     public Boundary getBoundary()
