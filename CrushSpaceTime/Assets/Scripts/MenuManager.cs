@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour {
     public InputField downInput;
     public InputField rightInput;
     public InputField repulseInput;
+    public InputField exitSpaceShipInput;
 
     private bool isOptionPanelActive;
     private string up;
@@ -19,6 +20,7 @@ public class MenuManager : MonoBehaviour {
     private string down;
     private string right;
     private string repulse;
+    private string exitSpaceShip;
 
 
     public void Start()
@@ -40,6 +42,7 @@ public class MenuManager : MonoBehaviour {
             else if (downInput.isFocused) focusedIF = downInput;
             else if (rightInput.isFocused) focusedIF = rightInput;
             else if (repulseInput.isFocused) focusedIF = repulseInput;
+            else if (exitSpaceShipInput.isFocused) focusedIF = exitSpaceShipInput;
 
             if (focusedIF != null)
             {
@@ -66,7 +69,8 @@ public class MenuManager : MonoBehaviour {
                 else if (Input.GetKeyDown(KeyCode.Space))
                 {
                     focusedIF.text = "Espace";
-                    repulse = "Space";
+                    if (focusedIF == repulseInput) repulse = "Space";
+                    else if (focusedIF == exitSpaceShipInput) exitSpaceShip = "Space";
                 }
                 else if (focusedIF.text.Length >= 2 && !focusedIF.text.Contains("Espace") && !focusedIF.text.Contains("Fleche"))
                 {
@@ -106,12 +110,14 @@ public class MenuManager : MonoBehaviour {
         if (down == null) down = downInput.text.ToUpper();
         if (right == null) right = rightInput.text.ToUpper();
         if (repulse == null) repulse = repulseInput.text.ToUpper();
+        if (exitSpaceShip == null) exitSpaceShip = exitSpaceShipInput.text.ToUpper();
 
         PlayerPrefs.SetString("UpPref", up);
         PlayerPrefs.SetString("LeftPref", left);
         PlayerPrefs.SetString("DownPref", down);
         PlayerPrefs.SetString("RightPref", right);
         PlayerPrefs.SetString("RepulsePref", repulse);
+        PlayerPrefs.SetString("ExitSpaceShipPref", exitSpaceShip);
     }
 
     private void setAllCommands()
@@ -121,18 +127,21 @@ public class MenuManager : MonoBehaviour {
         if (!PlayerPrefs.HasKey("DownPref")) PlayerPrefs.SetString("DownPref", "S");
         if (!PlayerPrefs.HasKey("RightPref")) PlayerPrefs.SetString("RightPref", "D");
         if (!PlayerPrefs.HasKey("RepulsePref")) PlayerPrefs.SetString("RepulsePref", "Space");
+        if (!PlayerPrefs.HasKey("ExitSpaceShipPref")) PlayerPrefs.SetString("ExitSpaceShipPref", "E");
 
         upInput.text = PlayerPrefs.GetString("UpPref");
         leftInput.text = PlayerPrefs.GetString("LeftPref");
         downInput.text = PlayerPrefs.GetString("DownPref");
         rightInput.text = PlayerPrefs.GetString("RightPref");
         repulseInput.text = PlayerPrefs.GetString("RepulsePref");
+        exitSpaceShipInput.text = PlayerPrefs.GetString("ExitSpaceShipPref");
 
         if (upInput.text.Contains("Up")) upInput.text = "Fleche Haut";
         if (leftInput.text.Contains("Left")) leftInput.text = "Fleche Gauche";
         if (downInput.text.Contains("Down")) downInput.text = "Fleche Bas";
         if (rightInput.text.Contains("Right")) rightInput.text = "Fleche Droite";
         if (repulseInput.text.Contains("Space")) repulseInput.text = "Espace";
+        if (exitSpaceShipInput.text.Contains("Space")) exitSpaceShipInput.text = "Espace";
     }
 
     public void Quit()

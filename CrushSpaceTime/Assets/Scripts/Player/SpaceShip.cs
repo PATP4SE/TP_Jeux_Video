@@ -6,12 +6,16 @@ public class SpaceShip : MonoBehaviour {
     [SerializeField] private Transform bullets;
     private AudioSource[] audioSources;
     private AudioSource shotAudio;
+    private KeyCode exitKey;
 
     // Use this for initialization
     void Start ()
     {
         audioSources = GetComponents<AudioSource>();
         shotAudio = audioSources[1];
+        System.String exitKeyString = PlayerPrefs.GetString("ExitSpaceShipPref");
+        if (exitKeyString.Contains("ESPACE")) exitKeyString = "Space";
+        exitKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), exitKeyString);
     }
 	
 	// Update is called once per frame
@@ -22,7 +26,7 @@ public class SpaceShip : MonoBehaviour {
             shoot();
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(exitKey))
         {
             LeaveShip();
         }

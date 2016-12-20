@@ -13,14 +13,16 @@ public class Repulse : MonoBehaviour {
     void Start ()
     {
         gameControllerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-        repulseKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("RepulsePref"));
+        System.String repulseKeyString = PlayerPrefs.GetString("RepulsePref");
+        if (repulseKeyString.Contains("ESPACE")) repulseKeyString = "Space";
+        repulseKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), repulseKeyString);
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
 
-        if (Input.GetKey(repulseKey))
+        if (Input.GetKey(repulseKey) && !gameControllerScript.GetIsInSpaceShip())
         {
             particle.Play();
             Object[] objects = GameObject.FindObjectsOfType(typeof(GameObject));
