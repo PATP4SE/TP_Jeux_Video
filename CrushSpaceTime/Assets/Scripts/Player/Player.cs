@@ -162,9 +162,6 @@ public class Player : MonoBehaviour {
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
 
-            this.dustCount = 0;
-            UpdateUIDust();
-
             this.isInSpaceShip = true;
             this.transform.position = new Vector3(col.gameObject.transform.position.x, col.gameObject.transform.position.y, 2);
             this.transform.rotation = new Quaternion(0, 0, -col.gameObject.transform.rotation.z, col.gameObject.transform.rotation.w);
