@@ -36,8 +36,8 @@ public class WormHole : MonoBehaviour {
     private IEnumerator DestroyPlayer()
     {
         yield return new WaitForSeconds(2);
-        GameObject.Destroy(GameObject.FindGameObjectWithTag("Player"));
-        GameObject.Destroy(GameObject.FindGameObjectWithTag("SpaceShip"));
+        GameObject.FindGameObjectWithTag("Player").SetActive(false);
+        GameObject.FindGameObjectWithTag("SpaceShip").SetActive(false);
     }
 
     private IEnumerator NextLevel()
