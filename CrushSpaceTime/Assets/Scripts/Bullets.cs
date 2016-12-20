@@ -57,6 +57,7 @@ public class Bullets : MonoBehaviour {
 
             col.GetComponent<Renderer>().enabled = false;
             Destroy(this.gameObject);
+            col.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
             Destroy(col.gameObject, audio.clip.length);
         }
     }

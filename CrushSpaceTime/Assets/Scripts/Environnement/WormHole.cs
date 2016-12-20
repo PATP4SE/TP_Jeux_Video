@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class WormHole : MonoBehaviour {
 
@@ -27,7 +28,25 @@ public class WormHole : MonoBehaviour {
             spaceShipAnim.SetBool("isOverWormhole", true);
             spaceShipAnim.Play("SpaceShip_Disapear");
             hasEnteredWormhole = true;
+            StartCoroutine(DestroyPlayer());
+            StartCoroutine(NextLevel());
         }
+    }
+
+    private IEnumerator DestroyPlayer()
+    {
+        yield return new WaitForSeconds(2);
+        GameObject.Destroy(GameObject.FindGameObjectWithTag("Player"));
+        GameObject.Destroy(GameObject.FindGameObjectWithTag("SpaceShip"));
+    }
+
+    private IEnumerator NextLevel()
+    {
+        yield return new WaitForSeconds(5);
+        if (SceneManager.GetActiveScene().name == "Level1")
+            SceneManager.LoadScene(2);
+        else
+            SceneManager.LoadScene(0);
     }
 
     public bool gethasEnteredWormhole()

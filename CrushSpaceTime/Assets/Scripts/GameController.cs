@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour {
     private bool isPlayerInSpaceShip;
 
     void Start () {
+        levelText = GameObject.Find("LevelText");
         StartCoroutine(makeLevelTextAppearDisappear());
 
         spawnWait = MIN_SPAWN_WAIT;
@@ -37,7 +38,6 @@ public class GameController : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player");
         spaceship = GameObject.FindGameObjectWithTag("SpaceShip");
         wormhole = GameObject.FindGameObjectWithTag("Wormhole");
-        levelText = GameObject.Find("LevelText");
         isPlayerInSpaceShip = false;
 
         StartCoroutine(spawnWaves());

@@ -162,11 +162,13 @@ public class Player : MonoBehaviour {
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
 
+            this.dustCount = 0;
+            UpdateUIDust();
+
             this.isInSpaceShip = true;
             this.transform.position = new Vector3(col.gameObject.transform.position.x, col.gameObject.transform.position.y, 2);
             this.transform.rotation = new Quaternion(0, 0, -col.gameObject.transform.rotation.z, col.gameObject.transform.rotation.w);
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().SetIsInSpaceShip(true);
-            
 
             GetComponent<PlayerMove>().enabled = false;
             GetComponent<Repulse>().enabled = false;
@@ -178,10 +180,6 @@ public class Player : MonoBehaviour {
             col.gameObject.GetComponent<SpaceShip>().enabled = true;
             col.gameObject.GetComponent<BoxCollider2D>().enabled = false;
             col.gameObject.GetComponent<PolygonCollider2D>().enabled = true;
-
-            //gameObject.SetActive(false);
-            //this.transform.position = 
-
         }
     }
 

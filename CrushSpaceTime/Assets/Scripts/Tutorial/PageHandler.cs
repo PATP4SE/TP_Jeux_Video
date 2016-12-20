@@ -24,7 +24,6 @@ public class PageHandler : MonoBehaviour {
 
     public void Next()
     {
-        print("switch page");
         if (imageNumber != maxImageNumber)
         {
             GameObject.Find("Image" + imageNumber).GetComponent<Image>().enabled = false;
@@ -42,7 +41,6 @@ public class PageHandler : MonoBehaviour {
 
     public void Previous()
     {
-        print("switch page");
         if (imageNumber != 0)
         {
             GameObject.Find("Image" + imageNumber).GetComponent<Image>().enabled = false;
